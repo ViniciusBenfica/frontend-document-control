@@ -14,20 +14,20 @@ async function getAllCompaniesOnDocuments(httpClient: httpClient<IEnterpriseOnDo
 	};
 }
 
-export default async function Home() {
+export default async function Documents() {
 	const companieOnDocuments = await getAllCompaniesOnDocuments(fetchHttpAdapter);
 
 	const columns = [
 		{
-			key: "enterprise",
+			key: "enterpriseName",
 			label: "Nome",
 		},
 		{
-			key: "cnpj",
+			key: "enterpriseCNPJ",
 			label: "CNPJ",
 		},
 		{
-			key: "document",
+			key: "documentTitle",
 			label: "Documento",
 		},
 		{
@@ -42,7 +42,7 @@ export default async function Home() {
 
 	return (
 		<main className="w-full">
-			<h1 className="-mb-6 mt-6 ml-6 font-bold text-3xl">Controle de documentos</h1>
+			<h1 className="-mb-6 mt-6 ml-6 font-bold text-3xl">Controle de empresas</h1>
 			<div className="m-auto flex h-full w-3/4 items-center justify-center">
 				<TableComponent rows={companieOnDocuments.body} columns={columns} />
 			</div>

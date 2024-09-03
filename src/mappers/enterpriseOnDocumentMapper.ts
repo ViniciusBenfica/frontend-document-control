@@ -9,16 +9,10 @@ export function enterpriseOnDocumentMapper(
 	return item.map((item) => {
 		return {
 			key: item?.id,
-			enterprise: {
-				id: item?.enterprise?.id,
-				name: item?.enterprise?.name,
-				cnpj: item?.enterprise?.cnpj,
-			},
-			document: {
-				id: item?.document?.id,
-				title: item?.document?.title,
-				description: item?.document?.description,
-			},
+			enterpriseName: item?.enterprise?.name,
+			enterpriseCNPJ: item?.enterprise?.cnpj,
+			documentTitle: item?.document?.title,
+			documentDescription: item?.document?.description,
 			issueDate: item?.issueDate,
 			dueDate: item?.dueDate,
 		};
