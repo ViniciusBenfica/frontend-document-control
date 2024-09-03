@@ -5,8 +5,8 @@ interface IProps {
 	categories: IEnterprise[];
 }
 
-export default async function TableSection(props: IProps) {
-	const rows = props.categories.map((category) => ({
+export default async function TableSection({ categories }: IProps) {
+	const rows = categories.map((category) => ({
 		key: category.id,
 		nome: category.name,
 		cnpj: category.cnpj,

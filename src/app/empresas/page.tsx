@@ -4,7 +4,7 @@ import TableSection from "./sections/table";
 
 async function getAllCompanies(httpClient: httpClient<IEnterprise[]>) {
 	const data = await httpClient.request({
-		url: "/findAll",
+		url: "/findAllEnterprise",
 		method: "get",
 	});
 	return {
