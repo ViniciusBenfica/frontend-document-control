@@ -1,4 +1,4 @@
-import type { IEnterprise, IEnterpriseApi } from "@/app/types/IEnterprise";
+import type { IEnterprise, IEnterpriseApi } from "@/types/IEnterprise";
 
 export function enterpriseMapper(item: IEnterpriseApi[]): IEnterprise[] {
 	return item.map((item) => {

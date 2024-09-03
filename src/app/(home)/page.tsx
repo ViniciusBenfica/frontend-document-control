@@ -1,7 +1,7 @@
 import TableComponent from "@/components/table";
 import { enterpriseOnDocumentMapper } from "@/mappers/enterpriseOnDocumentMapper";
-import { fetchHttpAdapter, type httpClient } from "../service";
-import type { IEnterpriseOnDocumentApi } from "../types/IEnterpriseOnDocument";
+import { fetchHttpAdapter, type httpClient } from "../../service";
+import type { IEnterpriseOnDocumentApi } from "../../types/IEnterpriseOnDocument";
 
 async function getAllCompaniesOnDocuments(httpClient: httpClient<IEnterpriseOnDocumentApi[]>) {
 	const data = await httpClient.request({

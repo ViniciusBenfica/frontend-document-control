@@ -1,4 +1,4 @@
-import type { IDocuments, IDocumentsApi } from "@/app/types/IDocuments";
+import type { IDocuments, IDocumentsApi } from "@/types/IDocuments";
 
 export function documentsMapper(item: IDocumentsApi[]): IDocuments[] {
 	return item.map((item) => {

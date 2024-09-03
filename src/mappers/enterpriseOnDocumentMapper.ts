@@ -1,7 +1,7 @@
 import type {
 	IEnterpriseOnDocument,
 	IEnterpriseOnDocumentApi,
-} from "@/app/types/IEnterpriseOnDocument";
+} from "@/types/IEnterpriseOnDocument";
 
 export function enterpriseOnDocumentMapper(
 	item: IEnterpriseOnDocumentApi[],

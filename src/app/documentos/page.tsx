@@ -1,7 +1,7 @@
 import TableComponent from "@/components/table";
 import { documentsMapper } from "@/mappers/documentsMapper";
-import { fetchHttpAdapter, type httpClient } from "../service";
-import type { IDocumentsApi } from "../types/IDocuments";
+import { fetchHttpAdapter, type httpClient } from "../../service";
+import type { IDocumentsApi } from "../../types/IDocuments";
 
 async function getAllDocuments(httpClient: httpClient<IDocumentsApi[]>) {
 	const data = await httpClient.request({

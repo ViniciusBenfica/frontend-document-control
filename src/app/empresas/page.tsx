@@ -1,7 +1,7 @@
 import TableComponent from "@/components/table";
 import { enterpriseMapper } from "@/mappers/enterpriseMapper";
-import { fetchHttpAdapter, type httpClient } from "../service";
-import type { IEnterpriseApi } from "../types/IEnterprise";
+import { fetchHttpAdapter, type httpClient } from "../../service";
+import type { IEnterpriseApi } from "../../types/IEnterprise";
 
 async function getAllCompanies(httpClient: httpClient<IEnterpriseApi[]>) {
 	const data = await httpClient.request({
