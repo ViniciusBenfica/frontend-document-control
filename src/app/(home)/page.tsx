@@ -14,7 +14,7 @@ async function getAllCompaniesOnDocuments(httpClient: httpClient<IEnterpriseOnDo
 	};
 }
 
-export default async function Documents() {
+export default async function Home() {
 	const companieOnDocuments = await getAllCompaniesOnDocuments(fetchHttpAdapter);
 
 	const columns = [
