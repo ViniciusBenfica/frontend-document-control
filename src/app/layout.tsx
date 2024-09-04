@@ -19,24 +19,25 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<section className="flex">
-					<div className="h-screen w-[150px] shadow-black/65 shadow-xl">
+					<div className="h-screen w-[220px] shadow-[0_4px_10px_rgba(0,0,0,0.65)]">
 						<nav>
+							{/* <div></div> */}
 							<ul>
 								<Link
 									href={"/"}
-									className="flex h-[50px] w-ful items-center justify-center transition-colors duration-50 hover:bg-green-700 hover:text-white"
+									className="flex h-[50px] w-ful items-center justify-center transition-colors duration-50 hover:bg-gray-300"
 								>
 									Geral
 								</Link>
 								<Link
 									href={"/empresas"}
-									className="flex h-[50px] w-ful items-center justify-center transition-colors duration-50 hover:bg-green-700 hover:text-white"
+									className="flex h-[50px] w-ful items-center justify-center transition-colors duration-50 hover:bg-gray-300"
 								>
 									Empresas
 								</Link>
 								<Link
 									href={"/documentos"}
-									className="flex h-[50px] w-ful items-center justify-center transition-colors duration-50 hover:bg-green-700 hover:text-white"
+									className="flex h-[50px] w-ful items-center justify-center transition-colors duration-50 hover:bg-gray-300"
 								>
 									Documentos
 								</Link>
