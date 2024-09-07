@@ -3,7 +3,7 @@ import { enterpriseOnDocumentMapper } from "@/mappers/enterpriseOnDocumentMapper
 import { fetchHttpAdapter, type httpClient } from "../../service";
 import type { IEnterpriseOnDocumentApi } from "../../types/IEnterpriseOnDocument";
 
-function formatDate(dateString: Date): string {
+function formatDate(dateString: string): string {
 	if (!dateString) return "";
 	const date = new Date(dateString);
 	return date.toLocaleDateString("pt-BR");
@@ -14,9 +14,10 @@ async function getAllCompaniesOnDocuments(httpClient: httpClient<IEnterpriseOnDo
 		url: "/findAllEnterpriseOnDocument",
 		method: "get",
 	});
+	const response = data.body.map((item) => enterpriseOnDocumentMapper(item));
 	return {
 		status: data.statusCode,
-		body: enterpriseOnDocumentMapper(data.body),
+		body: response,
 	};
 }
 
@@ -53,9 +54,11 @@ export default async function Home() {
 	];
 
 	return (
-		<main className="w-full">
-			<h1 className="-mb-6 mt-6 ml-6 font-bold text-3xl text-gray-600">Controle de empresas</h1>
-			<div className="m-auto flex h-full w-11/12 items-center justify-center">
+		<main className="flex w-full flex-col">
+			<div className="mt-5 ml-6 flex flex-col gap-3">
+				<h1 className="font-bold text-3xl text-gray-700">Controle de vencimento de documento</h1>
+			</div>
+			<div className="m-auto flex w-3/4 items-center justify-center">
 				<TableComponent rows={companieOnDocumentsWithDate} columns={columns} />
 			</div>
 		</main>

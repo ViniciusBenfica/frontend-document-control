@@ -22,8 +22,8 @@ export default async function Companies() {
 
 	const columns = [
 		{
-			key: "nome",
-			label: "NAME",
+			key: "name",
+			label: "Nome",
 		},
 		{
 			key: "cnpj",

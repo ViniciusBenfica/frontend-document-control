@@ -10,8 +10,8 @@ export interface IEnterpriseOnDocumentApi {
 		title: string;
 		description: string;
 	};
-	issueDate: Date;
-	dueDate: Date;
+	issueDate: string;
+	dueDate: string;
 }
 export interface IEnterpriseOnDocument {
 	key: string;
@@ -19,6 +19,6 @@ export interface IEnterpriseOnDocument {
 	enterpriseCNPJ: string;
 	documentTitle: string;
 	documentDescription: string;
-	issueDate: Date;
-	dueDate: Date;
+	issueDate: string;
+	dueDate: string;
 }
