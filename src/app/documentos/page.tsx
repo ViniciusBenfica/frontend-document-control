@@ -31,8 +31,8 @@ export default async function Documents() {
 	];
 
 	return (
-		<main className="flex w-full flex-col">
-			<div className="mt-5 ml-6 flex flex-col gap-3">
+		<main className="flex w-full flex-col p-6">
+			<div className="flex flex-col gap-3">
 				<h1 className="font-bold text-3xl text-gray-700">Controle de documentos</h1>
 				<Link
 					href="/documentos/cadastro"
@@ -41,7 +41,7 @@ export default async function Documents() {
 					Cadastrar Documento
 				</Link>
 			</div>
-			<div className="m-auto flex w-3/4 items-center justify-center">
+			<div className="m-auto w-full items-center justify-center">
 				<TableComponent rows={documents.body} columns={columns} />
 			</div>
 		</main>
