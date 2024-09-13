@@ -1,8 +1,8 @@
-import TableComponent from "@/components/table";
 import { documentsMapper } from "@/mappers/documentsMapper";
 import Link from "next/link";
 import { fetchHttpAdapter, type httpClient } from "../../service";
 import type { IDocumentsApi } from "../../types/IDocuments";
+import DocumentsTable from "./cadastro/components/table";
 
 async function getAllDocuments(httpClient: httpClient<IDocumentsApi[]>) {
 	const data = await httpClient.request({
@@ -19,25 +19,6 @@ async function getAllDocuments(httpClient: httpClient<IDocumentsApi[]>) {
 export default async function Documents() {
 	const documents = await getAllDocuments(fetchHttpAdapter);
 
-	const columns = [
-		{
-			key: "title",
-			label: "Título",
-		},
-		{
-			key: "description",
-			label: "Descrição",
-		},
-		{
-			key: "edit",
-			label: "Editar",
-		},
-		{
-			key: "remove",
-			label: "Remover",
-		},
-	];
-
 	return (
 		<main className="flex w-full flex-col p-6">
 			<div className="flex flex-col gap-3">
@@ -50,7 +31,7 @@ export default async function Documents() {
 				</Link>
 			</div>
 			<div className="m-auto w-full items-center justify-center">
-				<TableComponent rows={documents.body} columns={columns} path={"documentos"} />
+				<DocumentsTable rows={documents.body} />
 			</div>
 		</main>
 	);

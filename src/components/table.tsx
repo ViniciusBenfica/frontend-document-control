@@ -12,8 +12,9 @@ import {
 } from "@nextui-org/react";
 
 import EditIcon from "/public/icon/editIcon.svg";
-import RemoveIcon from "/public/icon/removeIcon.svg";
 
+import DeleteDocument from "@/components/deleteModal";
+import type { httpClient } from "@/service";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -21,13 +22,14 @@ interface IProps<T> {
 	rows: T[];
 	path?: string;
 	columns: { key: string; label: string }[];
-	formatter?: (value: string) => string;
+	deleteFunction?: (httpClient: httpClient, id: string) => void;
 }
 
 export default function TableComponent<T extends { key: string }>({
 	rows,
 	columns,
 	path,
+	deleteFunction,
 }: IProps<T>) {
 	const [page, setPage] = useState(1);
 	// const {activePage, range, setPage, onNext, onPrevious} = usePagination({
@@ -86,7 +88,9 @@ export default function TableComponent<T extends { key: string }>({
 											<EditIcon />
 										</Link>
 									)}
-									{item && column.key === "remove" && <RemoveIcon />}
+									{item && column.key === "remove" && deleteFunction && (
+										<DeleteDocument deleteFunction={deleteFunction} id={item.key} />
+									)}
 									{column.key !== "remove" &&
 										column.key !== "edit" &&
 										getKeyValue(item, column.key)}
