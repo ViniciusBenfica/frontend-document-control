@@ -28,6 +28,14 @@ export default async function Documents() {
 			key: "description",
 			label: "Descrição",
 		},
+		{
+			key: "edit",
+			label: "Editar",
+		},
+		{
+			key: "remove",
+			label: "Remover",
+		},
 	];
 
 	return (
@@ -42,7 +50,7 @@ export default async function Documents() {
 				</Link>
 			</div>
 			<div className="m-auto w-full items-center justify-center">
-				<TableComponent rows={documents.body} columns={columns} />
+				<TableComponent rows={documents.body} columns={columns} path={"documentos"} />
 			</div>
 		</main>
 	);
