@@ -5,7 +5,7 @@ import type {
 
 export function enterpriseOnDocumentMapper(item: IEnterpriseOnDocumentApi): IEnterpriseOnDocument {
 	return {
-		key: item?.id,
+		id: item?.id,
 		enterpriseName: item?.enterprise?.name,
 		enterpriseCNPJ: item?.enterprise?.cnpj,
 		documentTitle: item?.document?.title,

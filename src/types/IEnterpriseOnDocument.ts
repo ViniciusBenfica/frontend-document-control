@@ -14,7 +14,7 @@ export interface IEnterpriseOnDocumentApi {
 	dueDate: string;
 }
 export interface IEnterpriseOnDocument {
-	key: string;
+	id: string;
 	enterpriseName: string;
 	enterpriseCNPJ: string;
 	documentTitle: string;

@@ -2,11 +2,9 @@ export interface IEnterpriseApi {
 	id: string;
 	name: string;
 	cnpj: string;
-	documentId?: string;
 }
 export interface IEnterprise {
-	key: string;
+	id: string;
 	name: string;
 	cnpj: string;
-	documentId?: string;
 }

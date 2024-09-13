@@ -5,7 +5,7 @@ export interface IDocumentsApi {
 }
 
 export interface IDocuments {
-	key: string;
+	id: string;
 	title: string;
 	description: string;
 }
