@@ -38,7 +38,7 @@ export default function DocumentForm({ document }: Props) {
 
 	const updateDocument = async (httpClient: httpClient, data: FormValues) => {
 		await httpClient.request({
-			url: `/updateDocument/${document.key}`,
+			url: `/updateDocument/${document.id}`,
 			method: "put",
 			body: data,
 		});
@@ -46,7 +46,7 @@ export default function DocumentForm({ document }: Props) {
 
 	const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
 		try {
-			if (document.key) {
+			if (document.id) {
 				await updateDocument(axiosHttpAdapter, data);
 			} else {
 				await createDocument(axiosHttpAdapter, data);

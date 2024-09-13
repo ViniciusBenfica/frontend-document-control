@@ -25,12 +25,7 @@ interface IProps<T> {
 	deleteFunction?: (httpClient: httpClient, id: string) => void;
 }
 
-export default function TableComponent<T extends { key: string }>({
-	rows,
-	columns,
-	path,
-	deleteFunction,
-}: IProps<T>) {
+export default function TableComponent<T>({ rows, columns, path, deleteFunction }: IProps<T>) {
 	const [page, setPage] = useState(1);
 	// const {activePage, range, setPage, onNext, onPrevious} = usePagination({
 	//   total: 6,
@@ -79,17 +74,17 @@ export default function TableComponent<T extends { key: string }>({
 					{items.map((item, index) => (
 						<TableRow
 							className={`${index % 2 === 1 ? "bg-gray-300" : "bg-white"} h-[40px]`}
-							key={item?.key}
+							key={item?.id}
 						>
 							{columns.map((column) => (
 								<TableCell key={column.key}>
 									{item && column.key === "edit" && (
-										<Link href={`/${path}/cadastro/${item?.key}`}>
+										<Link href={`/${path}/cadastro/${item?.id}`}>
 											<EditIcon />
 										</Link>
 									)}
 									{item && column.key === "remove" && deleteFunction && (
-										<DeleteDocument deleteFunction={deleteFunction} id={item.key} />
+										<DeleteDocument deleteFunction={deleteFunction} id={item.id} />
 									)}
 									{column.key !== "remove" &&
 										column.key !== "edit" &&
