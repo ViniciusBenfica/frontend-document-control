@@ -1,7 +1,7 @@
 import { documentsMapper } from "@/mappers/documentsMapper";
 import { fetchHttpAdapter, type httpClient } from "@/service";
 import type { IDocumentsApi } from "@/types/IDocuments";
-import RegisterDocumentForm from "../components/form";
+import DocumentForm from "./components/form";
 
 interface Props {
 	params: {
@@ -29,7 +29,7 @@ export default async function RegisterDocument({ params }: Props) {
 			<div className="mt-5 ml-6 flex h-full flex-col gap-3">
 				<h1 className="font-bold text-3xl text-gray-700">Cadastro de documento</h1>
 				<div className="m-auto w-full">
-					<RegisterDocumentForm document={document.body} />
+					<DocumentForm document={document.body} />
 				</div>
 			</div>
 		</div>

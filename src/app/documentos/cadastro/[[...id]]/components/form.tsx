@@ -18,7 +18,7 @@ interface Props {
 	document: IDocuments;
 }
 
-export default function RegisterDocumentForm({ document }: Props) {
+export default function DocumentForm({ document }: Props) {
 	const router = useRouter();
 	const { register, handleSubmit } = useForm<FormValues>({
 		resolver: zodResolver(formSchema),

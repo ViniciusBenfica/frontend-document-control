@@ -9,6 +9,25 @@ interface IProps {
 	rows: IDocuments[];
 }
 
+const columns = [
+	{
+		key: "title",
+		label: "Título",
+	},
+	{
+		key: "description",
+		label: "Descrição",
+	},
+	{
+		key: "edit",
+		label: "Editar",
+	},
+	{
+		key: "remove",
+		label: "Remover",
+	},
+];
+
 export default function DocumentsTable({ rows }: IProps) {
 	const router = useRouter();
 	const deleteDocument = async (httpClient: httpClient, id: string) => {
@@ -18,25 +37,6 @@ export default function DocumentsTable({ rows }: IProps) {
 		});
 		router.refresh();
 	};
-
-	const columns = [
-		{
-			key: "title",
-			label: "Título",
-		},
-		{
-			key: "description",
-			label: "Descrição",
-		},
-		{
-			key: "edit",
-			label: "Editar",
-		},
-		{
-			key: "remove",
-			label: "Remover",
-		},
-	];
 
 	return (
 		<TableComponent
