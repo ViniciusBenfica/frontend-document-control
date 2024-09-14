@@ -90,15 +90,15 @@ export default function FormContextEnterprise({ documents, enterPrise }: Props) 
 			<form onSubmit={methods.handleSubmit(onSubmit)}>
 				<button
 					type="submit"
-					className="w-auto self-start rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
+					className="w-[150px] self-start rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
 				>
 					Salvar
 				</button>
-				{/* <div className="flex flex-col justify-between h-full"> */}
+				<br />
+				<br />
 				<FormRegistercompany />
 				<br />
 				<RegisterCompaniesFormTable documents={documents} />
-				{/* </div> */}
 			</form>
 		</FormProvider>
 	);

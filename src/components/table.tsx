@@ -13,8 +13,8 @@ import {
 
 import EditIcon from "/public/icon/editIcon.svg";
 
-import DeleteDocument from "@/components/deleteModal";
-import type { httpClient } from "@/service";
+import DeleteModal from "@/components/deleteModal";
+import { axiosHttpAdapter, type httpClient } from "@/service";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -84,7 +84,11 @@ export default function TableComponent<T>({ rows, columns, path, deleteFunction 
 										</Link>
 									)}
 									{item && column.key === "remove" && deleteFunction && (
-										<DeleteDocument deleteFunction={deleteFunction} id={item.id} />
+										<div className="cursor-pointer">
+											<DeleteModal
+												deleteFunction={() => deleteFunction(axiosHttpAdapter, item.id)}
+											/>
+										</div>
 									)}
 									{column.key !== "remove" &&
 										column.key !== "edit" &&

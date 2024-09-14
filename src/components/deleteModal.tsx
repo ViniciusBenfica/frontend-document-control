@@ -1,6 +1,5 @@
 "use client";
 
-import { axiosHttpAdapter, type httpClient } from "@/service";
 import {
 	Modal,
 	ModalBody,
@@ -13,11 +12,10 @@ import { Button } from "@nextui-org/react";
 import RemoveIcon from "/public/icon/removeIcon.svg";
 
 interface Props {
-	id: string;
-	deleteFunction: (httpClient: httpClient, id: string) => void;
+	deleteFunction: () => void;
 }
 
-export default function DeleteDocument({ deleteFunction, id }: Props) {
+export default function DeleteModal({ deleteFunction }: Props) {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 	return (
@@ -38,7 +36,7 @@ export default function DeleteDocument({ deleteFunction, id }: Props) {
 								<Button
 									color="primary"
 									onPress={() => {
-										deleteFunction(axiosHttpAdapter, id);
+										deleteFunction();
 										onClose();
 									}}
 								>

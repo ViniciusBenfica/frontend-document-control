@@ -1,5 +1,6 @@
 "use client";
 
+import DeleteDocument from "@/components/deleteModal";
 import type { IDocuments } from "@/types/IDocuments";
 import { parseDate } from "@internationalized/date";
 import { DatePicker, Pagination } from "@nextui-org/react";
@@ -21,6 +22,10 @@ const columns = [
 	{
 		key: "dueDate",
 		label: "Data de vencimento",
+	},
+	{
+		key: "remove",
+		label: "Remover",
 	},
 ];
 
@@ -56,11 +61,15 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 		}
 	};
 
+	const deleteFunction = (index: string) => {
+		remove(index as unknown as number);
+	};
+
 	return (
-		<div>
+		<div className="flex flex-col items-start">
 			<button
 				type="button"
-				className="w-auto self-start rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
+				className="w-[150px] rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
 				onClick={() => {
 					append({
 						id: "",
@@ -73,7 +82,6 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 			</button>
 			<div className="flex h-full w-full items-center justify-center">
 				<Table
-					className="h-[350px]"
 					bottomContent={
 						<div className="flex w-full justify-center">
 							<Pagination
@@ -135,12 +143,12 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 									</TableCell>
 									<TableCell className="p-2">
 										<Controller
-											name={`documents.${index}.issueDate`}
+											name={`documents.${actualIndex}.issueDate`}
 											control={control}
 											render={({ field }) => {
 												return (
 													<DatePicker
-														value={parseDate(field.value)}
+														value={field.value ? parseDate(field.value) : null}
 														onChange={(date) => {
 															const formattedDate = date.toString();
 															field.onChange(formattedDate);
@@ -152,12 +160,12 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 									</TableCell>
 									<TableCell className="p-2">
 										<Controller
-											name={`documents.${index}.dueDate`}
+											name={`documents.${actualIndex}.dueDate`}
 											control={control}
 											render={({ field }) => {
 												return (
 													<DatePicker
-														value={parseDate(field.value)}
+														value={field.value ? parseDate(field.value) : null}
 														onChange={(date) => {
 															const formattedDate = date.toString();
 															field.onChange(formattedDate);
@@ -166,6 +174,11 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 												);
 											}}
 										/>
+									</TableCell>
+									<TableCell className="p-2">
+										<div className="cursor-pointer">
+											<DeleteDocument deleteFunction={() => deleteFunction(item.id)} />
+										</div>
 									</TableCell>
 								</TableRow>
 							);
