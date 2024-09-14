@@ -2,17 +2,17 @@
 
 import { axiosHttpAdapter, type httpClient } from "@/service";
 import type { IDocuments } from "@/types/IDocuments";
-import type { IEnterpriseOnDocument } from "@/types/IEnterpriseOnDocument";
+import type { IEnterprise } from "@/types/IEnterprise";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import FormRegistercompany from "./form";
-import RegisterCompaniesTable from "./table";
+import RegisterCompaniesFormTable from "./formTable";
 
 interface Props {
-	enterpriseOnDocument: IEnterpriseOnDocument[];
 	documents: IDocuments[];
+	enterPrise: IEnterprise;
 }
 
 const formSchema = z.object({
@@ -20,26 +20,32 @@ const formSchema = z.object({
 	cnpj: z.string(),
 	documents: z.array(
 		z.object({
-			documentTitle: z.string(),
+			id: z.string(),
 			issueDate: z.string(),
 			dueDate: z.string(),
-			key: z.string(),
 		}),
 	),
 });
 
 export type FormValues = z.infer<typeof formSchema>;
 
-export default function FormContextcompany({ enterpriseOnDocument, documents }: Props) {
+export default function FormContextEnterprise({ documents, enterPrise }: Props) {
 	const router = useRouter();
 
 	const methods = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			documents: enterpriseOnDocument,
+			name: enterPrise?.name,
+			cnpj: enterPrise?.cnpj,
+			documents: enterPrise?.documents?.map((doc) => ({
+				id: doc?.documentId,
+				issueDate: doc?.issueDate,
+				dueDate: doc?.dueDate,
+			})),
 		},
 	});
-	const createCompanie = async (httpClient: httpClient, data: FormValues) => {
+
+	const createEnterprise = async (httpClient: httpClient, data: FormValues) => {
 		await httpClient.request({
 			url: "/createEnterprise",
 			method: "post",
@@ -47,10 +53,33 @@ export default function FormContextcompany({ enterpriseOnDocument, documents }: 
 		});
 	};
 
+	const updateEnterprise = async (httpClient: httpClient, data: FormValues) => {
+		await httpClient.request({
+			url: `/updateEnterprise/${enterPrise.id}`,
+			method: "put",
+			body: data,
+		});
+	};
+
 	const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
+		const formattedData = {
+			name: data.name,
+			cnpj: data.cnpj,
+			documents: data.documents.map((doc) => ({
+				...doc,
+				issueDate: new Date(doc.issueDate).toISOString(),
+				dueDate: new Date(doc.dueDate).toISOString(),
+			})),
+		};
+
 		try {
-			await createCompanie(axiosHttpAdapter, data);
-			router.push("/documentos");
+			if (enterPrise.id) {
+				await updateEnterprise(axiosHttpAdapter, formattedData);
+			} else {
+				await createEnterprise(axiosHttpAdapter, formattedData);
+			}
+			router.push("/empresas");
+			router.refresh();
 		} catch (error) {
 			console.log(error);
 		}
@@ -65,8 +94,11 @@ export default function FormContextcompany({ enterpriseOnDocument, documents }: 
 				>
 					Salvar
 				</button>
+				{/* <div className="flex flex-col justify-between h-full"> */}
 				<FormRegistercompany />
-				<RegisterCompaniesTable documents={documents} />
+				<br />
+				<RegisterCompaniesFormTable documents={documents} />
+				{/* </div> */}
 			</form>
 		</FormProvider>
 	);

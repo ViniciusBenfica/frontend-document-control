@@ -1,30 +1,15 @@
 import { documentsMapper } from "@/mappers/documentsMapper";
+import { enterpriseMapper } from "@/mappers/enterpriseMapper";
 import { enterpriseOnDocumentMapper } from "@/mappers/enterpriseOnDocumentMapper";
 import { fetchHttpAdapter, type httpClient } from "@/service";
 import type { IDocumentsApi } from "@/types/IDocuments";
+import type { IEnterpriseApi } from "@/types/IEnterprise";
 import type { IEnterpriseOnDocumentApi } from "@/types/IEnterpriseOnDocument";
-import FormContextcompany from "../components/formContext";
+import FormContextcompany from "./components/formContext";
 
 interface Props {
 	params: {
 		id: string;
-	};
-}
-
-async function getFindEnterpriseOnDocument(
-	httpClient: httpClient<IEnterpriseOnDocumentApi[]>,
-	id: string,
-) {
-	const data = await httpClient.request({
-		url: `/findEnterpriseOnDocument?enterpriseId=${id}`,
-		method: "get",
-	});
-
-	const result = data.body.map((item) => enterpriseOnDocumentMapper(item));
-
-	return {
-		status: data.statusCode,
-		body: result,
 	};
 }
 
@@ -42,15 +27,29 @@ async function getFindAllDocuments(httpClient: httpClient<IDocumentsApi[]>) {
 	};
 }
 
+async function getFindEnterprise(httpClient: httpClient<IEnterpriseApi>, id: string) {
+	const data = await httpClient.request({
+		url: `/findEnterprise/${id}`,
+		method: "get",
+	});
+
+	return {
+		status: data.statusCode,
+		body: enterpriseMapper(data.body),
+	};
+}
+
 export default async function RegisterCompanies({ params }: Props) {
-	const categories = await getFindEnterpriseOnDocument(fetchHttpAdapter, params.id);
 	const documents = await getFindAllDocuments(fetchHttpAdapter);
+	const enterPrise = await getFindEnterprise(fetchHttpAdapter, params.id);
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="mt-5 ml-6 flex flex-col gap-3">
+			<div className="mt-5 ml-6 flex h-full flex-col gap-3">
 				<h1 className="font-bold text-3xl text-gray-700">Cadastro de empresa</h1>
-				<FormContextcompany enterpriseOnDocument={categories.body} documents={documents.body} />
+				<div className="m-auto w-full">
+					<FormContextcompany documents={documents.body} enterPrise={enterPrise.body} />
+				</div>
 			</div>
 		</div>
 	);

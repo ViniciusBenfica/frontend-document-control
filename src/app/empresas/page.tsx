@@ -1,8 +1,8 @@
-import TableComponent from "@/components/table";
 import { enterpriseMapper } from "@/mappers/enterpriseMapper";
 import Link from "next/link";
 import { fetchHttpAdapter, type httpClient } from "../../service";
 import type { IEnterpriseApi } from "../../types/IEnterprise";
+import CompaniesTable from "./cadastro/components/table";
 
 async function getAllCompanies(httpClient: httpClient<IEnterpriseApi[]>) {
 	const data = await httpClient.request({
@@ -20,20 +20,9 @@ async function getAllCompanies(httpClient: httpClient<IEnterpriseApi[]>) {
 export default async function Companies() {
 	const categories = await getAllCompanies(fetchHttpAdapter);
 
-	const columns = [
-		{
-			key: "name",
-			label: "Nome",
-		},
-		{
-			key: "cnpj",
-			label: "CNPJ",
-		},
-	];
-
 	return (
-		<main className="flex w-full flex-col">
-			<div className="mt-5 ml-6 flex flex-col gap-3">
+		<main className="flex w-full flex-col p-6">
+			<div className="flex flex-col gap-3">
 				<h1 className="font-bold text-3xl text-gray-700">Controle de empresas</h1>
 				<Link
 					href="/empresas/cadastro"
@@ -42,8 +31,8 @@ export default async function Companies() {
 					Cadastrar empresa
 				</Link>
 			</div>
-			<div className="m-auto flex w-3/4 items-center justify-center">
-				<TableComponent rows={categories.body} columns={columns} />
+			<div className="m-auto w-full items-center justify-center">
+				<CompaniesTable rows={categories.body} />
 			</div>
 		</main>
 	);
