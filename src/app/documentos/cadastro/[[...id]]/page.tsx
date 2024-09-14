@@ -28,7 +28,7 @@ export default async function RegisterDocument({ params }: Props) {
 		<div className="flex w-full flex-col">
 			<div className="mt-5 ml-6 flex h-full flex-col gap-3">
 				<h1 className="font-bold text-3xl text-gray-700">Cadastro de documento</h1>
-				<div className="m-auto w-full">
+				<div className="w-full">
 					<DocumentForm document={document.body} />
 				</div>
 			</div>

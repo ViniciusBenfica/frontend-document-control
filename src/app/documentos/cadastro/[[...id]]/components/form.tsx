@@ -60,7 +60,14 @@ export default function DocumentForm({ document }: Props) {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col">
-			<div className="m-auto flex w-3/4 flex-col justify-center gap-6">
+			<button
+				type="submit"
+				className="w-[150px] rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
+			>
+				Salvar
+			</button>
+			<br />
+			<div className="flex w-3/4 flex-col justify-center gap-2">
 				<div>
 					<label htmlFor="title" className="text-gray-700 text-smfont-medium">
 						Titulo do documento
@@ -69,7 +76,7 @@ export default function DocumentForm({ document }: Props) {
 						id="title"
 						{...register("title")}
 						type="text"
-						placeholder="Nome do documento"
+						placeholder="Titulo do documento"
 						className="w-full rounded-md border border-gray-300 p-3 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
 					/>
 				</div>
@@ -84,12 +91,6 @@ export default function DocumentForm({ document }: Props) {
 						className="w-full rounded-md border border-gray-300 p-3 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
 					/>
 				</div>
-				<button
-					type="submit"
-					className="w-auto self-start rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
-				>
-					Salvar
-				</button>
 			</div>
 		</form>
 	);

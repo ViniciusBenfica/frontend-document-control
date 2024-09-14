@@ -1,10 +1,8 @@
 import { documentsMapper } from "@/mappers/documentsMapper";
 import { enterpriseMapper } from "@/mappers/enterpriseMapper";
-import { enterpriseOnDocumentMapper } from "@/mappers/enterpriseOnDocumentMapper";
 import { fetchHttpAdapter, type httpClient } from "@/service";
 import type { IDocumentsApi } from "@/types/IDocuments";
 import type { IEnterpriseApi } from "@/types/IEnterprise";
-import type { IEnterpriseOnDocumentApi } from "@/types/IEnterpriseOnDocument";
 import FormContextcompany from "./components/formContext";
 
 interface Props {
@@ -47,7 +45,7 @@ export default async function RegisterCompanies({ params }: Props) {
 		<div className="flex w-full flex-col">
 			<div className="mt-5 ml-6 flex h-full flex-col gap-3">
 				<h1 className="font-bold text-3xl text-gray-700">Cadastro de empresa</h1>
-				<div className="m-auto w-full">
+				<div className="w-full">
 					<FormContextcompany documents={documents.body} enterPrise={enterPrise.body} />
 				</div>
 			</div>

@@ -8,7 +8,7 @@ export default function FormRegistercompany() {
 
 	return (
 		<div className="flex w-full flex-col">
-			<div className="flex w-3/4 flex-col justify-center gap-6">
+			<div className="flex w-3/4 flex-col justify-center gap-2">
 				<div>
 					<label htmlFor="name" className="text-gray-700 text-smfont-medium">
 						Nome da empresa
