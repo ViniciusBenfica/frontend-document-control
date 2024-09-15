@@ -3,9 +3,9 @@ import { enterpriseOnDocumentMapper } from "@/mappers/enterpriseOnDocumentMapper
 import { fetchHttpAdapter, type httpClient } from "../../service";
 import type { IEnterpriseOnDocumentApi } from "../../types/IEnterpriseOnDocument";
 
-function formatDate(dateString: string): string {
-	if (!dateString) return "";
-	const date = new Date(dateString);
+function formatDate(dateValue: string | Date): string {
+	if (!dateValue) return "";
+	const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
 	return date.toLocaleDateString("pt-BR");
 }
 
@@ -24,27 +24,29 @@ async function getAllCompaniesOnDocuments(httpClient: httpClient<IEnterpriseOnDo
 export default async function Home() {
 	const companieOnDocuments = await getAllCompaniesOnDocuments(fetchHttpAdapter);
 
-	const companieOnDocumentsWithDate = companieOnDocuments.body.map((companie) => ({
-		...companie,
-		issueDate: formatDate(companie.issueDate),
-		dueDate: formatDate(companie.dueDate),
-	}));
+	// const companieOnDocumentsWithDate = companieOnDocuments.body.map((companie) => ({
+	// 	...companie,
+	// 	issueDate: formatDate(companie.issueDate),
+	// 	dueDate: formatDate(companie.dueDate),
+	// }));
 
-	// const today = new Date();
+	const today = new Date();
+	const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-	// const companieOnDocumentsWithDate = companieOnDocuments.body
-	// 	.map((companie) => ({
-	// 		...companie,
-	// 		issueDate: new Date(companie.issueDate),
-	// 		dueDate: new Date(companie.dueDate),
-	// 	}))
-	// 	.filter((companie) => {
-	// 		const timeDiff = companie.dueDate.getTime() - today.getTime();
-
-	// 		const daysToDue = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-	// 		return daysToDue === 7;
-	// 	});
+	const companieOnDocumentsWithDate = companieOnDocuments.body
+		.map((companie) => ({
+			...companie,
+			issueDate: new Date(companie.issueDate),
+			dueDate: new Date(companie.dueDate),
+		}))
+		.filter((companie) => {
+			return companie.dueDate >= sevenDaysAgo && companie.dueDate <= today;
+		})
+		.map((companie) => ({
+			...companie,
+			issueDate: formatDate(companie.issueDate),
+			dueDate: formatDate(companie.dueDate),
+		}));
 
 	const columns = [
 		{
