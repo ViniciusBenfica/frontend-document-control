@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
 	return (
-		<NextUIProvider>
+		<NextUIProvider locale="pt-BR">
 			<ToastContainer />
 			{children}
 		</NextUIProvider>

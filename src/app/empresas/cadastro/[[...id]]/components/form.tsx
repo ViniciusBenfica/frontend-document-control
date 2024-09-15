@@ -12,7 +12,6 @@ export default function FormRegistercompany() {
 		formState: { errors },
 		trigger,
 	} = useFormContext<FormValues>();
-	const [cnpj, setCnpj] = useState("");
 
 	const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value.replace(/\D/g, "");
@@ -24,7 +23,6 @@ export default function FormRegistercompany() {
 		value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
 		value = value.replace(/(\d{4})(\d)/, "$1-$2");
 
-		setCnpj(value);
 		setValue("cnpj", value);
 		trigger("cnpj");
 	};
@@ -53,7 +51,6 @@ export default function FormRegistercompany() {
 						type="text"
 						{...register("cnpj")}
 						variant="bordered"
-						value={cnpj}
 						onChange={handleCnpjChange}
 						isInvalid={!!errors?.cnpj}
 						errorMessage={errors?.cnpj?.message}
