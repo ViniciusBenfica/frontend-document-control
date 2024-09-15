@@ -9,7 +9,7 @@ export const fetchHttpAdapter: httpClient = {
 			fetchResponse = await fetch(`${url}${data.url}`, {
 				method: data.method,
 				body: data.body,
-				cache: "no-store",
+				cache: "no-cache",
 			});
 		} catch (error) {
 			const _error = error as Error;
