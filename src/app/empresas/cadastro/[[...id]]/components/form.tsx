@@ -1,10 +1,33 @@
 "use client";
 
+import { Input } from "@nextui-org/react";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import type { FormValues } from "./formContext";
 
 export default function FormRegistercompany() {
-	const { register } = useFormContext<FormValues>();
+	const {
+		register,
+		setValue,
+		formState: { errors },
+		trigger,
+	} = useFormContext<FormValues>();
+	const [cnpj, setCnpj] = useState("");
+
+	const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let value = e.target.value.replace(/\D/g, "");
+
+		if (value.length > 14) return;
+
+		value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+		value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+		value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
+		value = value.replace(/(\d{4})(\d)/, "$1-$2");
+
+		setCnpj(value);
+		setValue("cnpj", value);
+		trigger("cnpj");
+	};
 
 	return (
 		<div className="flex w-full flex-col">
@@ -13,24 +36,28 @@ export default function FormRegistercompany() {
 					<label htmlFor="name" className="text-gray-700 text-smfont-medium">
 						Nome da empresa
 					</label>
-					<input
-						id="name"
-						{...register("name")}
+					<Input
 						type="text"
-						placeholder="Nome da empresa"
-						className="w-full rounded-md border border-gray-300 p-3 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+						{...register("name")}
+						variant="bordered"
+						isInvalid={!!errors?.name}
+						errorMessage={errors?.name?.message}
+						className="w-full "
 					/>
 				</div>
 				<div>
 					<label htmlFor="cnpj" className="text-gray-700 text-smfont-medium">
 						CNPJ
 					</label>
-					<input
-						id="cnpj"
-						{...register("cnpj")}
+					<Input
 						type="text"
-						placeholder="CNPJ"
-						className="w-full rounded-md border border-gray-300 p-3 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+						{...register("cnpj")}
+						variant="bordered"
+						value={cnpj}
+						onChange={handleCnpjChange}
+						isInvalid={!!errors?.cnpj}
+						errorMessage={errors?.cnpj?.message}
+						className="w-full"
 					/>
 				</div>
 			</div>

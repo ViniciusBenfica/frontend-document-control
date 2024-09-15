@@ -3,13 +3,15 @@
 import { axiosHttpAdapter, type httpClient } from "@/service";
 import type { IDocuments } from "@/types/IDocuments";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Input, Textarea } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 const formSchema = z.object({
-	title: z.string(),
-	description: z.string(),
+	title: z.string().min(1, "O título deve ter no mínimo 1 caractere"),
+	description: z.string().min(1, "O título deve ter no mínimo 1 caractere"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -20,7 +22,11 @@ interface Props {
 
 export default function DocumentForm({ document }: Props) {
 	const router = useRouter();
-	const { register, handleSubmit } = useForm<FormValues>({
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: document.title,
@@ -48,8 +54,10 @@ export default function DocumentForm({ document }: Props) {
 		try {
 			if (document.id) {
 				await updateDocument(axiosHttpAdapter, data);
+				toast.success("Documento atualizado com sucesso");
 			} else {
 				await createDocument(axiosHttpAdapter, data);
+				toast.success("Documento criado com sucesso");
 			}
 			router.push("/documentos");
 			router.refresh();
@@ -72,23 +80,25 @@ export default function DocumentForm({ document }: Props) {
 					<label htmlFor="title" className="text-gray-700 text-smfont-medium">
 						Titulo do documento
 					</label>
-					<input
-						id="title"
-						{...register("title")}
+					<Input
 						type="text"
-						placeholder="Titulo do documento"
-						className="w-full rounded-md border border-gray-300 p-3 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+						{...register("title")}
+						variant="bordered"
+						isInvalid={!!errors?.title}
+						errorMessage={errors?.title?.message}
+						className="w-full"
 					/>
 				</div>
 				<div>
 					<label htmlFor="descrição" className="text-gray-700 text-smfont-medium">
 						Descrição do documento
 					</label>
-					<textarea
+					<Textarea
 						id="descrição"
 						{...register("description")}
-						placeholder="Descrição do documento"
-						className="w-full rounded-md border border-gray-300 p-3 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+						variant="bordered"
+						isInvalid={!!errors?.description}
+						errorMessage={errors?.description?.message}
 					/>
 				</div>
 			</div>

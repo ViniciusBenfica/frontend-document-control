@@ -3,9 +3,11 @@
 import { axiosHttpAdapter, type httpClient } from "@/service";
 import type { IDocuments } from "@/types/IDocuments";
 import type { IEnterprise } from "@/types/IEnterprise";
+import { isValidCNPJ } from "@/utils/cnpjValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 import FormRegistercompany from "./form";
 import RegisterCompaniesFormTable from "./formTable";
@@ -16,13 +18,13 @@ interface Props {
 }
 
 const formSchema = z.object({
-	name: z.string(),
-	cnpj: z.string(),
+	name: z.string().min(1, "Nome da empresa é obrigatório"),
+	cnpj: z.string().refine(isValidCNPJ, { message: "CNPJ inválido" }),
 	documents: z.array(
 		z.object({
-			id: z.string(),
-			issueDate: z.string(),
-			dueDate: z.string(),
+			id: z.string().min(1, "Nome da empresa é obrigatório"),
+			issueDate: z.string().min(1, "Nome da empresa é obrigatório"),
+			dueDate: z.string().min(1, "Nome da empresa é obrigatório"),
 		}),
 	),
 });
@@ -75,8 +77,10 @@ export default function FormContextEnterprise({ documents, enterPrise }: Props) 
 		try {
 			if (enterPrise.id) {
 				await updateEnterprise(axiosHttpAdapter, formattedData);
+				toast.success("Empresa atualizada com sucesso");
 			} else {
 				await createEnterprise(axiosHttpAdapter, formattedData);
+				toast.success("Empresa criada com sucesso");
 			}
 			router.push("/empresas");
 			router.refresh();

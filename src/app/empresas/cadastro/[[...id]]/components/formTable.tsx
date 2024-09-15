@@ -5,9 +5,10 @@ import type { IDocuments } from "@/types/IDocuments";
 import { parseDate } from "@internationalized/date";
 import { DatePicker, Pagination } from "@nextui-org/react";
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/table";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import Select, { type SelectInstance } from "react-select";
+import { toast } from "react-toastify";
 import type { FormValues } from "./formContext";
 
 const columns = [
@@ -34,7 +35,11 @@ interface IProps {
 }
 
 export default function RegisterCompaniesFormTable({ documents }: IProps) {
-	const { control, register } = useFormContext<FormValues>();
+	const {
+		control,
+		register,
+		formState: { errors },
+	} = useFormContext<FormValues>();
 	const documentsArray = documents.map((doc) => ({ label: doc.title, value: doc.id }));
 	const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
 		control,
@@ -61,9 +66,17 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 		}
 	};
 
-	const deleteFunction = (index: string) => {
-		remove(index as unknown as number);
+	const deleteFunction = (index: number) => {
+		remove(index);
 	};
+
+	const notify = () => toast.error("Existem campos incompletos na tabela");
+
+	useEffect(() => {
+		if (errors.documents) {
+			notify();
+		}
+	}, [errors.documents]);
 
 	return (
 		<div className="flex flex-col items-start">
@@ -177,7 +190,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 									</TableCell>
 									<TableCell className="p-2">
 										<div className="cursor-pointer">
-											<DeleteDocument deleteFunction={() => deleteFunction(item.id)} />
+											<DeleteDocument deleteFunction={() => deleteFunction(actualIndex)} />
 										</div>
 									</TableCell>
 								</TableRow>

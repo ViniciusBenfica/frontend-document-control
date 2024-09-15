@@ -30,6 +30,22 @@ export default async function Home() {
 		dueDate: formatDate(companie.dueDate),
 	}));
 
+	// const today = new Date();
+
+	// const companieOnDocumentsWithDate = companieOnDocuments.body
+	// 	.map((companie) => ({
+	// 		...companie,
+	// 		issueDate: new Date(companie.issueDate),
+	// 		dueDate: new Date(companie.dueDate),
+	// 	}))
+	// 	.filter((companie) => {
+	// 		const timeDiff = companie.dueDate.getTime() - today.getTime();
+
+	// 		const daysToDue = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+	// 		return daysToDue === 7;
+	// 	});
+
 	const columns = [
 		{
 			key: "enterpriseName",
@@ -54,11 +70,13 @@ export default async function Home() {
 	];
 
 	return (
-		<main className="flex w-full flex-col">
-			<div className="mt-5 ml-6 flex flex-col gap-3">
-				<h1 className="font-bold text-3xl text-gray-700">Controle de vencimento de documento</h1>
+		<main className="flex w-full flex-col p-6">
+			<div className="flex flex-col gap-3">
+				<h1 className="font-bold text-3xl text-gray-700">
+					Visualização de Vencimento de Documentos
+				</h1>
 			</div>
-			<div className="m-auto flex w-3/4 items-center justify-center">
+			<div className="m-auto w-full items-center justify-center">
 				<TableComponent rows={companieOnDocumentsWithDate} columns={columns} />
 			</div>
 		</main>
