@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  document-control-frontend:
+    restart: unless-stopped
+    container_name: document-control-frontend
+    build:
+      context: .
+      target: development
+    command: npm run dev
+    env_file:
+      - .env.local
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - document-control-network
+
+networks:
+  document-control-network:
+    name: document-control-network
+    driver: bridge
+    external: true
