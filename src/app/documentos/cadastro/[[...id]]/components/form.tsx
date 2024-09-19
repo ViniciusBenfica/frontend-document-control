@@ -62,7 +62,7 @@ export default function DocumentForm({ document }: Props) {
 			router.push("/documentos");
 			router.refresh();
 		} catch (error) {
-			console.log(error);
+			toast.error("Erro ao tentar criar o documento");
 		}
 	};
 
