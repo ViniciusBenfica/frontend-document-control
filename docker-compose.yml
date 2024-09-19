@@ -19,6 +19,4 @@ services:
 
 networks:
   document-control-network:
-    name: document-control-network
-    driver: bridge
     external: true
