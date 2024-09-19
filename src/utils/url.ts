@@ -1,1 +1,1 @@
-export const url = process.env.NEXT_PUBLIC_ENDPOINT;
+export const url = process.env.NEXT_PUBLIC_ENDPOINT_SERVER;

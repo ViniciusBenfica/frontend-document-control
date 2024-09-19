@@ -85,7 +85,7 @@ export default function FormContextEnterprise({ documents, enterPrise }: Props) 
 			router.push("/empresas");
 			router.refresh();
 		} catch (error) {
-			console.log(error);
+			toast.error("Erro ao tentar criar a empresa");
 		}
 	};
 
