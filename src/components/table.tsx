@@ -2,6 +2,7 @@
 
 import {
 	Pagination,
+	type SortDescriptor,
 	Table,
 	TableBody,
 	TableCell,
@@ -21,12 +22,17 @@ import { useMemo, useState } from "react";
 interface IProps<T> {
 	rows: T[];
 	path?: string;
-	columns: { key: string; label: string }[];
+	columns: { key: string; label: string; sortable?: boolean }[];
 	deleteFunction?: (httpClient: httpClient, id: string) => void;
 }
 
 export default function TableComponent<T>({ rows, columns, path, deleteFunction }: IProps<T>) {
 	const [page, setPage] = useState(1);
+	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
+		column: undefined,
+		direction: "ascending",
+	});
+
 	// const {activePage, range, setPage, onNext, onPrevious} = usePagination({
 	//   total: 6,
 	//   showControls: true,
@@ -45,9 +51,21 @@ export default function TableComponent<T>({ rows, columns, path, deleteFunction 
 		return [...slicedItems, ...Array(rowsPerPage - slicedItems.length)];
 	}, [page, rows]);
 
+	const sortedItems = useMemo(() => {
+		return [...items].sort((a, b) => {
+			const first = a[sortDescriptor.column as keyof T];
+			const second = b[sortDescriptor.column as keyof T];
+			const cmp = first < second ? -1 : first > second ? 1 : 0;
+
+			return sortDescriptor.direction === "descending" ? -cmp : cmp;
+		});
+	}, [sortDescriptor, items]);
+
 	return (
 		<div className="flex h-full w-full items-center justify-center">
 			<Table
+				onSortChange={setSortDescriptor}
+				sortDescriptor={sortDescriptor}
 				bottomContent={
 					<div className="flex w-full justify-center">
 						<Pagination
@@ -65,13 +83,17 @@ export default function TableComponent<T>({ rows, columns, path, deleteFunction 
 			>
 				<TableHeader columns={columns}>
 					{(column) => (
-						<TableColumn className="bg-[#27272a] p-5 text-white" key={column.key}>
+						<TableColumn
+							allowsSorting={column.sortable}
+							className="bg-[#27272a] p-5 text-white"
+							key={column.key}
+						>
 							{column.label}
 						</TableColumn>
 					)}
 				</TableHeader>
-				<TableBody items={items}>
-					{items.map((item, index) => (
+				<TableBody items={sortedItems}>
+					{sortedItems.map((item, index) => (
 						<TableRow
 							className={`${index % 2 === 1 ? "bg-gray-300" : "bg-white"} h-[40px]`}
 							key={item?.id}

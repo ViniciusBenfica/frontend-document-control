@@ -13,10 +13,12 @@ const columns = [
 	{
 		key: "title",
 		label: "Título",
+		sortable: true,
 	},
 	{
 		key: "description",
 		label: "Descrição",
+		sortable: true,
 	},
 	{
 		key: "edit",

@@ -24,34 +24,35 @@ async function getAllCompaniesOnDocuments(httpClient: httpClient<IEnterpriseOnDo
 export default async function Home() {
 	const companieOnDocuments = await getAllCompaniesOnDocuments(fetchHttpAdapter);
 
-	// const companieOnDocumentsWithDate = companieOnDocuments.body.map((companie) => ({
-	// 	...companie,
-	// 	issueDate: formatDate(companie.issueDate),
-	// 	dueDate: formatDate(companie.dueDate),
-	// }));
+	const companieOnDocumentsWithDate = companieOnDocuments.body.map((companie) => ({
+		...companie,
+		issueDate: formatDate(companie.issueDate),
+		dueDate: formatDate(companie.dueDate),
+	}));
 
-	const today = new Date();
-	const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+	// const today = new Date();
+	// const sevenDaysAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-	const companieOnDocumentsWithDate = companieOnDocuments.body
-		.map((companie) => ({
-			...companie,
-			issueDate: new Date(companie.issueDate),
-			dueDate: new Date(companie.dueDate),
-		}))
-		.filter((companie) => {
-			return companie.dueDate >= sevenDaysAgo && companie.dueDate <= today;
-		})
-		.map((companie) => ({
-			...companie,
-			issueDate: formatDate(companie.issueDate),
-			dueDate: formatDate(companie.dueDate),
-		}));
+	// const companieOnDocumentsWithDate = companieOnDocuments.body
+	// 	.map((companie) => ({
+	// 		...companie,
+	// 		issueDate: new Date(companie.issueDate),
+	// 		dueDate: new Date(companie.dueDate),
+	// 	}))
+	// 	.filter((companie) => {
+	// 		return companie.dueDate >= sevenDaysAgo && companie.dueDate <= today;
+	// 	})
+	// 	.map((companie) => ({
+	// 		...companie,
+	// 		issueDate: formatDate(companie.issueDate),
+	// 		dueDate: formatDate(companie.dueDate),
+	// 	}));
 
 	const columns = [
 		{
 			key: "enterpriseName",
 			label: "Nome",
+			sortable: true,
 		},
 		{
 			key: "enterpriseCNPJ",
@@ -60,14 +61,17 @@ export default async function Home() {
 		{
 			key: "documentTitle",
 			label: "Documento",
+			sortable: true,
 		},
 		{
 			key: "issueDate",
 			label: "Data de emissão",
+			sortable: true,
 		},
 		{
 			key: "dueDate",
 			label: "Data de vencimento",
+			sortable: true,
 		},
 	];
 
