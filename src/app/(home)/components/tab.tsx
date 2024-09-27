@@ -7,7 +7,10 @@ export default function Tab() {
 	const pathname = usePathname();
 
 	const isActive = (targetPath: string) => {
-		return pathname === targetPath ? "bg-gray-300 font-bold" : "";
+		if (targetPath === "/") {
+			return pathname === "/" ? "bg-gray-300 font-bold" : "";
+		}
+		return pathname.startsWith(targetPath) ? "bg-gray-300 font-bold" : "";
 	};
 
 	return (
