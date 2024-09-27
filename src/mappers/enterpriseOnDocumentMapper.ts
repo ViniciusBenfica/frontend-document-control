@@ -3,6 +3,12 @@ import type {
 	IEnterpriseOnDocumentApi,
 } from "@/types/IEnterpriseOnDocument";
 
+function formatDate(dateValue: string | Date): string {
+	if (!dateValue) return "";
+	const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
+	return date.toLocaleDateString("pt-BR");
+}
+
 export function enterpriseOnDocumentMapper(item: IEnterpriseOnDocumentApi): IEnterpriseOnDocument {
 	return {
 		id: item?.id,
@@ -10,7 +16,7 @@ export function enterpriseOnDocumentMapper(item: IEnterpriseOnDocumentApi): IEnt
 		enterpriseCNPJ: item?.enterprise?.cnpj,
 		documentTitle: item?.document?.title,
 		documentDescription: item?.document?.description,
-		issueDate: item?.issueDate.split("T")[0],
-		dueDate: item?.dueDate.split("T")[0],
+		issueDate: formatDate(item?.issueDate.split("T")[0]),
+		dueDate: formatDate(item?.dueDate.split("T")[0]),
 	};
 }

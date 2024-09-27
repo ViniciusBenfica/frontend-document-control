@@ -9,6 +9,7 @@ export const axiosHttpAdapter: httpClient = {
 			axiosResponse = await axios.request({
 				baseURL: process.env.NEXT_PUBLIC_ENDPOINT_CLIENT,
 				url: data.url,
+				params: data.params,
 				method: data.method,
 				data: data.body,
 			});

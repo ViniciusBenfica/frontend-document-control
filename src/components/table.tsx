@@ -1,6 +1,10 @@
 "use client";
 
+import DeleteModal from "@/components/deleteModal";
+import { axiosHttpAdapter, type httpClient } from "@/service";
+import { truncateString } from "@/utils/tuncateString";
 import {
+	Input,
 	Pagination,
 	type SortDescriptor,
 	Table,
@@ -11,27 +15,41 @@ import {
 	TableRow,
 	getKeyValue,
 } from "@nextui-org/react";
-
-import EditIcon from "/public/icon/editIcon.svg";
-
-import DeleteModal from "@/components/deleteModal";
-import { axiosHttpAdapter, type httpClient } from "@/service";
+import debounce from "debounce";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import EditIcon from "/public/icon/editIcon.svg";
 
 interface IProps<T> {
 	rows: T[];
 	path?: string;
 	columns: { key: string; label: string; sortable?: boolean }[];
 	deleteFunction?: (httpClient: httpClient, id: string) => void;
+	filterFunction?: (httpClient: httpClient, value: string) => Promise<T[]>;
 }
 
-export default function TableComponent<T>({ rows, columns, path, deleteFunction }: IProps<T>) {
+export default function TableComponent<T>({
+	rows,
+	columns,
+	path,
+	deleteFunction,
+	filterFunction,
+}: IProps<T>) {
+	const [row, setRow] = useState(rows);
 	const [page, setPage] = useState(1);
+	const [filterValue, setFilterValue] = useState("");
 	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
 		column: undefined,
 		direction: "ascending",
 	});
+
+	const filter = async (value: string) => {
+		if (filterFunction) {
+			setRow(await filterFunction(axiosHttpAdapter, value));
+		}
+	};
+
+	const debouncedFilter = useCallback(debounce(filter, 1000), []);
 
 	// const {activePage, range, setPage, onNext, onPrevious} = usePagination({
 	//   total: 6,
@@ -41,15 +59,15 @@ export default function TableComponent<T>({ rows, columns, path, deleteFunction 
 	// });
 
 	const rowsPerPage = 6;
-	const pages = Math.ceil(rows.length / rowsPerPage);
+	const pages = Math.ceil(row.length / rowsPerPage);
 
 	const items = useMemo(() => {
 		const start = (page - 1) * rowsPerPage;
 		const end = start + rowsPerPage;
-		const slicedItems = rows.slice(start, end);
+		const slicedItems = row.slice(start, end);
 
 		return [...slicedItems, ...Array(rowsPerPage - slicedItems.length)];
-	}, [page, rows]);
+	}, [page, row]);
 
 	const sortedItems = useMemo(() => {
 		return [...items].sort((a, b) => {
@@ -66,10 +84,22 @@ export default function TableComponent<T>({ rows, columns, path, deleteFunction 
 			<Table
 				onSortChange={setSortDescriptor}
 				sortDescriptor={sortDescriptor}
+				topContent={
+					filterFunction && (
+						<Input
+							className="w-full sm:max-w-[44%]"
+							placeholder="Pesquise aqui..."
+							value={filterValue}
+							onValueChange={(e) => {
+								debouncedFilter(e);
+								setFilterValue(e);
+							}}
+						/>
+					)
+				}
 				bottomContent={
 					<div className="flex w-full justify-center">
 						<Pagination
-							isCompact
 							showControls
 							showShadow
 							className="dark"
@@ -114,7 +144,7 @@ export default function TableComponent<T>({ rows, columns, path, deleteFunction 
 									)}
 									{column.key !== "remove" &&
 										column.key !== "edit" &&
-										getKeyValue(item, column.key)}
+										truncateString(getKeyValue(item, column.key), 20)}
 								</TableCell>
 							))}
 						</TableRow>

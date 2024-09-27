@@ -1,6 +1,7 @@
 export interface httpRequest {
 	url: string;
 	method: "get" | "post" | "put" | "delete";
+	params?: any;
 	body?: any;
 	headers?: any;
 }

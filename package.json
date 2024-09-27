@@ -13,6 +13,7 @@
 		"@nextui-org/react": "^2.4.6",
 		"@svgr/webpack": "^8.1.0",
 		"axios": "^1.7.7",
+		"debounce": "^2.1.1",
 		"framer-motion": "^11.5.4",
 		"next": "14.2.7",
 		"react": "^18",
