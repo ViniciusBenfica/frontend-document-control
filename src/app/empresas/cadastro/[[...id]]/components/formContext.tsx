@@ -22,7 +22,7 @@ const formSchema = z.object({
 	cnpj: z.string().refine(isValidCNPJ, { message: "CNPJ inválido" }),
 	documents: z.array(
 		z.object({
-			id: z.string().min(1, "Nome da empresa é obrigatório"),
+			documentId: z.string().min(1, "Nome da empresa é obrigatório"),
 			issueDate: z.string().min(1, "Nome da empresa é obrigatório"),
 			dueDate: z.string().min(1, "Nome da empresa é obrigatório"),
 		}),
@@ -40,7 +40,7 @@ export default function FormContextEnterprise({ documents, enterPrise }: Props) 
 			name: enterPrise?.name,
 			cnpj: enterPrise?.cnpj,
 			documents: enterPrise?.documents?.map((doc) => ({
-				id: doc?.documentId,
+				documentId: doc?.documentId,
 				issueDate: doc?.issueDate,
 				dueDate: doc?.dueDate,
 			})),

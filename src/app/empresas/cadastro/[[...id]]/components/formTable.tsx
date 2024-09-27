@@ -37,17 +37,15 @@ interface IProps {
 export default function RegisterCompaniesFormTable({ documents }: IProps) {
 	const {
 		control,
-		register,
 		formState: { errors },
 	} = useFormContext<FormValues>();
 	const documentsArray = documents.map((doc) => ({ label: doc.title, value: doc.id }));
-	const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+	const { fields, append, remove } = useFieldArray({
 		control,
 		name: "documents",
 	});
 
 	const [page, setPage] = useState(1);
-
 	const rowsPerPage = 3;
 	const pages = Math.ceil(fields.length / rowsPerPage);
 
@@ -85,7 +83,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 				className="w-[150px] rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
 				onClick={() => {
 					append({
-						id: "",
+						documentId: "",
 						dueDate: "",
 						issueDate: "",
 					});
@@ -98,7 +96,6 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 					bottomContent={
 						<div className="flex w-full justify-center">
 							<Pagination
-								isCompact
 								showControls
 								showShadow
 								className="dark"
@@ -127,7 +124,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 								>
 									<TableCell className="w-1/3 p-2" tabIndex={-1} onClick={handleSelectClick}>
 										<Controller
-											name={`documents.${actualIndex}.id`}
+											name={`documents.${actualIndex}.documentId`}
 											control={control}
 											render={({ field }) => (
 												<Select
