@@ -18,10 +18,6 @@ async function getAllCompaniesOnDocuments(httpClient: httpClient<IEnterpriseOnDo
 export default async function Home() {
 	const companieOnDocuments = await getAllCompaniesOnDocuments(fetchHttpAdapter);
 
-	const companieOnDocumentsWithDate = companieOnDocuments.body.map((companie) => ({
-		...companie,
-	}));
-
 	return (
 		<main className="flex w-full flex-col p-6">
 			<div className="flex flex-col gap-3">
@@ -30,7 +26,7 @@ export default async function Home() {
 				</h1>
 			</div>
 			<div className="m-auto w-full items-center justify-center">
-				<HomeTable rows={companieOnDocumentsWithDate} />
+				<HomeTable rows={companieOnDocuments.body} />
 			</div>
 		</main>
 	);

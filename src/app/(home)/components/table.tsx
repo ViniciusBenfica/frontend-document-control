@@ -7,6 +7,8 @@ import type {
 	IEnterpriseOnDocument,
 	IEnterpriseOnDocumentApi,
 } from "@/types/IEnterpriseOnDocument";
+import { useState } from "react";
+import PDF from "./PDF/PDF";
 
 interface IProps {
 	rows: IEnterpriseOnDocument[];
@@ -40,6 +42,8 @@ const columns = [
 ];
 
 export default function HomeTable({ rows }: IProps) {
+	const [filterData, setFilterData] = useState<IEnterpriseOnDocument[]>(rows);
+
 	const filterEnterpriseOnDocument = async (
 		httpClient: httpClient<IEnterpriseOnDocumentApi[]>,
 		value: string,
@@ -54,16 +58,18 @@ export default function HomeTable({ rows }: IProps) {
 			},
 		});
 
-		const response = data.body.map((item) => enterpriseOnDocumentMapper(item));
-		return response;
+		setFilterData(data.body.map((item) => enterpriseOnDocumentMapper(item)));
 	};
 
 	return (
-		<TableComponent
-			rows={rows}
-			columns={columns}
-			path={"documentos"}
-			filterFunction={filterEnterpriseOnDocument}
-		/>
+		<div>
+			<TableComponent
+				rows={filterData}
+				columns={columns}
+				path={"documentos"}
+				downloadButton={<PDF data={filterData} />}
+				filterFunction={filterEnterpriseOnDocument}
+			/>
+		</div>
 	);
 }

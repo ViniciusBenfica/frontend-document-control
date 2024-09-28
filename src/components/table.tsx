@@ -25,7 +25,8 @@ interface IProps<T> {
 	path?: string;
 	columns: { key: string; label: string; sortable?: boolean }[];
 	deleteFunction?: (httpClient: httpClient, id: string) => void;
-	filterFunction?: (httpClient: httpClient, value: string) => Promise<T[]>;
+	filterFunction?: (httpClient: httpClient, value: string) => void;
+	downloadButton?: React.ReactNode;
 }
 
 export default function TableComponent<T>({
@@ -34,8 +35,8 @@ export default function TableComponent<T>({
 	path,
 	deleteFunction,
 	filterFunction,
+	downloadButton,
 }: IProps<T>) {
-	const [row, setRow] = useState(rows);
 	const [page, setPage] = useState(1);
 	const [filterValue, setFilterValue] = useState("");
 	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
@@ -43,13 +44,13 @@ export default function TableComponent<T>({
 		direction: "ascending",
 	});
 
-	const filter = async (value: string) => {
+	const filter = (value: string) => {
 		if (filterFunction) {
-			setRow(await filterFunction(axiosHttpAdapter, value));
+			filterFunction(axiosHttpAdapter, value);
 		}
 	};
 
-	const debouncedFilter = useCallback(debounce(filter, 1000), []);
+	const debouncedFilter = useCallback(debounce(filter, 500), []);
 
 	// const {activePage, range, setPage, onNext, onPrevious} = usePagination({
 	//   total: 6,
@@ -59,15 +60,15 @@ export default function TableComponent<T>({
 	// });
 
 	const rowsPerPage = 6;
-	const pages = Math.ceil(row.length / rowsPerPage);
+	const pages = Math.ceil(rows.length / rowsPerPage);
 
 	const items = useMemo(() => {
 		const start = (page - 1) * rowsPerPage;
 		const end = start + rowsPerPage;
-		const slicedItems = row.slice(start, end);
+		const slicedItems = rows.slice(start, end);
 
 		return [...slicedItems, ...Array(rowsPerPage - slicedItems.length)];
-	}, [page, row]);
+	}, [page, rows]);
 
 	const sortedItems = useMemo(() => {
 		return [...items].sort((a, b) => {
@@ -85,17 +86,20 @@ export default function TableComponent<T>({
 				onSortChange={setSortDescriptor}
 				sortDescriptor={sortDescriptor}
 				topContent={
-					filterFunction && (
-						<Input
-							className="w-full sm:max-w-[44%]"
-							placeholder="Pesquise aqui..."
-							value={filterValue}
-							onValueChange={(e) => {
-								debouncedFilter(e);
-								setFilterValue(e);
-							}}
-						/>
-					)
+					<div className="flex justify-between">
+						{filterFunction && (
+							<Input
+								className="w-full sm:max-w-[44%]"
+								placeholder="Pesquise aqui..."
+								value={filterValue}
+								onValueChange={(e) => {
+									debouncedFilter(e);
+									setFilterValue(e);
+								}}
+							/>
+						)}
+						{downloadButton}
+					</div>
 				}
 				bottomContent={
 					<div className="flex w-full justify-center">
