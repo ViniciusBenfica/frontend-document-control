@@ -1,6 +1,6 @@
 "use client";
 
-import TableComponent from "@/components/table";
+import TableComponent, { type IFilter } from "@/components/table";
 import { enterpriseOnDocumentMapper } from "@/mappers/enterpriseOnDocumentMapper";
 import type { httpClient } from "@/service";
 import type {
@@ -46,15 +46,17 @@ export default function HomeTable({ rows }: IProps) {
 
 	const filterEnterpriseOnDocument = async (
 		httpClient: httpClient<IEnterpriseOnDocumentApi[]>,
-		value: string,
+		value: IFilter,
 	) => {
 		const data = await httpClient.request({
 			url: "/findAllEnterpriseOnDocument",
 			method: "get",
 			params: {
-				name: value,
-				cnpj: value,
-				title: value,
+				name: value?.text,
+				cnpj: value?.text,
+				title: value?.text,
+				issueDate: value?.date?.start,
+				dueDate: value?.date?.end,
 			},
 		});
 

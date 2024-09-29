@@ -3,7 +3,9 @@
 import DeleteModal from "@/components/deleteModal";
 import { axiosHttpAdapter, type httpClient } from "@/service";
 import { truncateString } from "@/utils/tuncateString";
+import { parseDate } from "@internationalized/date";
 import {
+	DateRangePicker,
 	Input,
 	Pagination,
 	type SortDescriptor,
@@ -18,14 +20,20 @@ import {
 import debounce from "debounce";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
+import CloseIcon from "/public/icon/closeIcon.svg";
 import EditIcon from "/public/icon/editIcon.svg";
+
+export interface IFilter {
+	text?: string | null;
+	date?: { start: string | null; end: string | null };
+}
 
 interface IProps<T> {
 	rows: T[];
 	path?: string;
 	columns: { key: string; label: string; sortable?: boolean }[];
 	deleteFunction?: (httpClient: httpClient, id: string) => void;
-	filterFunction?: (httpClient: httpClient, value: string) => void;
+	filterFunction?: (httpClient: httpClient, value: IFilter) => void;
 	downloadButton?: React.ReactNode;
 }
 
@@ -38,19 +46,41 @@ export default function TableComponent<T>({
 	downloadButton,
 }: IProps<T>) {
 	const [page, setPage] = useState(1);
-	const [filterValue, setFilterValue] = useState("");
+	const [filterValue, setFilterValue] = useState<IFilter>({
+		text: null,
+		date: { start: null, end: null },
+	});
 	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
 		column: undefined,
 		direction: "ascending",
 	});
 
-	const filter = (value: string) => {
-		if (filterFunction) {
-			filterFunction(axiosHttpAdapter, value);
-		}
+	const debouncedFilter = useCallback(
+		debounce((values) => {
+			if (filterFunction) {
+				filterFunction(axiosHttpAdapter, values);
+			}
+		}, 500),
+		[filterFunction],
+	);
+
+	const handleFilterChange = (value: IFilter) => {
+		const newFilterValues = {
+			...filterValue,
+			...value,
+		};
+		setFilterValue(newFilterValues);
+		debouncedFilter(newFilterValues);
 	};
 
-	const debouncedFilter = useCallback(debounce(filter, 500), []);
+	const clearDateFilter = () => {
+		const clearedFilterValues = {
+			...filterValue,
+			date: { start: null, end: null },
+		};
+		setFilterValue(clearedFilterValues);
+		debouncedFilter(clearedFilterValues);
+	};
 
 	// const {activePage, range, setPage, onNext, onPrevious} = usePagination({
 	//   total: 6,
@@ -88,15 +118,33 @@ export default function TableComponent<T>({
 				topContent={
 					<div className="flex justify-between">
 						{filterFunction && (
-							<Input
-								className="w-full sm:max-w-[44%]"
-								placeholder="Pesquise aqui..."
-								value={filterValue}
-								onValueChange={(e) => {
-									debouncedFilter(e);
-									setFilterValue(e);
-								}}
-							/>
+							<div className="flex">
+								<Input
+									className="w-full"
+									placeholder="Pesquise aqui..."
+									onValueChange={(e) => handleFilterChange({ text: e })}
+								/>
+								<DateRangePicker
+									value={
+										filterValue?.date?.start && filterValue?.date?.end
+											? {
+													start: parseDate(filterValue.date.start),
+													end: parseDate(filterValue.date.end),
+												}
+											: null
+									}
+									onChange={(e) =>
+										handleFilterChange({
+											date: { start: e.start.toString(), end: e.end.toString() },
+										})
+									}
+								/>
+								{filterValue?.date?.start && filterValue?.date?.end && (
+									<button type="button" onClick={clearDateFilter} className="rounded">
+										<CloseIcon />
+									</button>
+								)}
+							</div>
 						)}
 						{downloadButton}
 					</div>

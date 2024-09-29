@@ -6,7 +6,12 @@ import type {
 function formatDate(dateValue: string | Date): string {
 	if (!dateValue) return "";
 	const date = dateValue instanceof Date ? dateValue : new Date(dateValue);
-	return date.toLocaleDateString("pt-BR");
+
+	const day = String(date.getUTCDate()).padStart(2, "0");
+	const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+	const year = date.getUTCFullYear();
+
+	return `${day}/${month}/${year}`;
 }
 
 export function enterpriseOnDocumentMapper(item: IEnterpriseOnDocumentApi): IEnterpriseOnDocument {

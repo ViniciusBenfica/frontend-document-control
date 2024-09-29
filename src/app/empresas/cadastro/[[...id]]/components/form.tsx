@@ -40,7 +40,7 @@ export default function FormRegistercompany() {
 						variant="bordered"
 						isInvalid={!!errors?.name}
 						errorMessage={errors?.name?.message}
-						className="w-full "
+						className="w-full"
 					/>
 				</div>
 				<div>
