@@ -1,16 +1,9 @@
 "use client";
 
 import type { IEnterpriseOnDocument } from "@/types/IEnterpriseOnDocument";
-import dynamic from "next/dynamic";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import React from "react";
 import PDFDocument from "./PDFDocument";
-
-const PDFDownloadLink = dynamic(
-	() => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
-	{
-		ssr: false,
-	},
-);
 
 interface IProps {
 	data: IEnterpriseOnDocument[];

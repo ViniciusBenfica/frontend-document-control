@@ -7,8 +7,9 @@ import type {
 	IEnterpriseOnDocument,
 	IEnterpriseOnDocumentApi,
 } from "@/types/IEnterpriseOnDocument";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import PDF from "./PDF/PDF";
+const PDF = dynamic(() => import("./PDF/PDF"), { ssr: false });
 
 interface IProps {
 	rows: IEnterpriseOnDocument[];
