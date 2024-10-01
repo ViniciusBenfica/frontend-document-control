@@ -118,7 +118,7 @@ export default function TableComponent<T>({
 				topContent={
 					<div className="flex justify-between">
 						{filterFunction && (
-							<div className="flex">
+							<div className="flex gap-2">
 								<Input
 									className="w-full"
 									placeholder="Pesquise aqui..."

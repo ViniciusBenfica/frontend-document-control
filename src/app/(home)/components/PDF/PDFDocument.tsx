@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
 		color: "#666",
 	},
 	section: {
-		marginBottom: 7,
-		padding: 6,
+		marginBottom: 10,
+		padding: 10,
 		border: "1px solid #E4E4E4",
 		borderRadius: 5,
 		backgroundColor: "#F9F9F9",
@@ -50,7 +50,7 @@ export default function PDFDocument({ data }: IProps) {
 	return (
 		<Document>
 			<Page size="A4" style={styles.page}>
-				<Text style={styles.header}>Visão geral</Text>
+				{/* <Text style={styles.header}>Visão geral</Text> */}
 
 				{data.map((item, index) => (
 					<View key={index} style={styles.section}>
