@@ -3,17 +3,25 @@ import Link from "next/link";
 import { fetchHttpAdapter, type httpClient } from "../../service";
 import type { IDocumentsApi } from "../../types/IDocuments";
 import DocumentsTable from "./cadastro/components/table";
+import PlusIcon from "/public/icon/plus.svg"
 
 async function getAllDocuments(httpClient: httpClient<IDocumentsApi[]>) {
-	const data = await httpClient.request({
-		url: "/findAllDocument",
-		method: "get",
+	try {
+		const data = await httpClient.request({
+			url: "/findAllDocument",
+			method: "get",
 	});
 	const response = data.body.map((item) => documentsMapper(item));
 	return {
-		status: data.statusCode,
-		body: response,
-	};
+			status: data.statusCode,
+			body: response,
+		};
+	} catch (error) {
+		return {
+			status: 500,
+			body: [],
+		};
+	}
 }
 
 export default async function Documents() {
@@ -21,15 +29,20 @@ export default async function Documents() {
 
 	return (
 		<main className="flex w-full flex-col p-6">
-			<div className="flex flex-col gap-3">
-				<h1 className="font-bold text-3xl text-gray-700">Controle de documentos</h1>
-				<Link
-					href="/documentos/cadastro"
-					className="w-auto self-start rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
-				>
-					Cadastrar Documento
-				</Link>
-			</div>
+			<div className="flex justify-between items-center mb-6">
+        <div>
+				<h1 className="text-2xl font-extrabold tracking-tight text-[#020817f6]">Documentos</h1>
+				<p className="text-[#64748b] text-sm">
+					Gerencie os documentos disponíveis no sistema.
+				</p>
+        </div>
+        <Link href="/documentos/cadastro">
+          <button className="bg-[#0367c8] hover:bg-[#0353a4] p-2 rounded-md text-white text-sm flex items-center gap-2">
+						<PlusIcon/>
+             Novo Documento
+          </button>
+        </Link>
+      </div>
 			<div className="m-auto w-full items-center justify-center">
 				<DocumentsTable rows={documents.body} />
 			</div>
