@@ -3,6 +3,7 @@
 import type { IEnterpriseOnDocument } from "@/types/IEnterpriseOnDocument";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import React from "react";
+import PDFIcon from "/public/icon/PDF.svg";
 import PDFDocument from "./PDFDocument";
 
 interface IProps {
@@ -15,8 +16,9 @@ export default function PDF({ data }: IProps) {
 			<PDFDownloadLink document={<PDFDocument data={data} />} fileName="example.pdf">
 				<button
 					type="button"
-					className="w-[150px] rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
+					className="bg-[#0367c8] hover:bg-[#0353a4] p-2 rounded-md text-white text-sm flex items-center gap-2"
 				>
+					<PDFIcon />
 					Download PDF
 				</button>
 			</PDFDownloadLink>

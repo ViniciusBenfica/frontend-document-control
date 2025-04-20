@@ -184,7 +184,7 @@ export default function TableComponent<T>({
 							key={item?.id}
 						>
 							{columns.map((column) => (
-								<TableCell key={column.key}>
+								<TableCell key={column.key} className="min-w-[130px] max-w-[130px]">
 									{item && column.key === "edit" && (
 										<Link href={`/${path}/cadastro/${item?.id}`}>
 											<EditIcon />
