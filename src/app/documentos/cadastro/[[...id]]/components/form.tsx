@@ -18,7 +18,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 interface Props {
-	document: IDocuments;
+	document: IDocuments | null;
 }
 
 export default function DocumentForm({ document }: Props) {
@@ -45,7 +45,7 @@ export default function DocumentForm({ document }: Props) {
 
 	const updateDocument = async (httpClient: httpClient, data: FormValues) => {
 		await httpClient.request({
-			url: `/updateDocument/${document.id}`,
+			url: `/updateDocument/${document?.id}`,
 			method: "put",
 			body: data,
 		});
