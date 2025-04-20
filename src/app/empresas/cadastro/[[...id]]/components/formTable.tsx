@@ -2,9 +2,19 @@
 
 import DeleteDocument from "@/components/deleteModal";
 import type { IDocuments } from "@/types/IDocuments";
+import { DatePicker } from "@heroui/date-picker";
+import { Pagination } from "@heroui/pagination";
+import {
+	type SortDescriptor,
+	Table,
+	TableBody,
+	TableCell,
+	TableColumn,
+	TableHeader,
+	TableRow,
+	getKeyValue,
+} from "@heroui/table";
 import { parseDate } from "@internationalized/date";
-import { DatePicker, Pagination } from "@nextui-org/react";
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/table";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import Select, { type SelectInstance } from "react-select";
@@ -40,7 +50,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 		formState: { errors },
 	} = useFormContext<FormValues>();
 	const documentsArray = documents.map((doc) => ({ label: doc.title, value: doc.id }));
-	const { fields, append, remove } = useFieldArray({
+	const { fields, prepend, remove } = useFieldArray({
 		control,
 		name: "documents",
 	});
@@ -80,16 +90,16 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 		<div className="flex flex-col items-start">
 			<button
 				type="button"
-				className="w-[150px] rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
+				className="bg-[#0367c8] hover:bg-[#0353a4] p-2 rounded-md text-white text-sm mt-5 mb-3"
 				onClick={() => {
-					append({
+					prepend({
 						documentId: "",
 						dueDate: "",
 						issueDate: "",
 					});
 				}}
 			>
-				Adicionar
+				Adicionar documento
 			</button>
 			<div className="flex h-full w-full items-center justify-center">
 				<Table
@@ -109,7 +119,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 				>
 					<TableHeader columns={columns}>
 						{(column) => (
-							<TableColumn className="bg-[#27272a] p-5 text-white" key={column.key}>
+							<TableColumn className="bg-[#27272a] py-5 text-white" key={column.key}>
 								{column.label}
 							</TableColumn>
 						)}
@@ -119,7 +129,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 							const actualIndex = (page - 1) * rowsPerPage + index;
 							return (
 								<TableRow
-									className={`${index % 2 === 1 ? "bg-gray-300" : "bg-slate-400"}`}
+									className={`${index % 2 === 1 ? "bg-gray-300" : "bg-white"} h-[40px] border-b border-gray-200`}
 									key={item?.id}
 								>
 									<TableCell className="w-1/3 p-2" tabIndex={-1} onClick={handleSelectClick}>
@@ -160,7 +170,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 													<DatePicker
 														value={field.value ? parseDate(field.value) : null}
 														onChange={(date) => {
-															const formattedDate = date.toString();
+															const formattedDate = date?.toString();
 															field.onChange(formattedDate);
 														}}
 													/>
@@ -177,7 +187,7 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 													<DatePicker
 														value={field.value ? parseDate(field.value) : null}
 														onChange={(date) => {
-															const formattedDate = date.toString();
+															const formattedDate = date?.toString();
 															field.onChange(formattedDate);
 														}}
 													/>
@@ -196,6 +206,12 @@ export default function RegisterCompaniesFormTable({ documents }: IProps) {
 					</TableBody>
 				</Table>
 			</div>
+			<button
+				type="submit"
+				className="bg-[#0367c8] hover:bg-[#0353a4] p-2 w-[150px] rounded-md text-white text-sm text-center my-5"
+			>
+				Salvar
+			</button>
 		</div>
 	);
 }

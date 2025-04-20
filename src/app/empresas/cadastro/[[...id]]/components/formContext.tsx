@@ -22,9 +22,9 @@ const formSchema = z.object({
 	cnpj: z.string().refine(isValidCNPJ, { message: "CNPJ inválido" }),
 	documents: z.array(
 		z.object({
-			documentId: z.string().min(1, "Nome da empresa é obrigatório"),
-			issueDate: z.string().min(1, "Nome da empresa é obrigatório"),
-			dueDate: z.string().min(1, "Nome da empresa é obrigatório"),
+			documentId: z.string().min(1, "Documento é obrigatório"),
+			issueDate: z.string().min(1, "Data de emissão é obrigatório"),
+			dueDate: z.string().min(1, "Data de vencimento é obrigatório"),
 		}),
 	),
 });
@@ -92,16 +92,8 @@ export default function FormContextEnterprise({ documents, enterPrise }: Props) 
 	return (
 		<FormProvider {...methods}>
 			<form onSubmit={methods.handleSubmit(onSubmit)}>
-				<button
-					type="submit"
-					className="w-[150px] self-start rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
-				>
-					Salvar
-				</button>
-				<br />
 				<br />
 				<FormRegistercompany />
-				<br />
 				<RegisterCompaniesFormTable documents={documents} />
 			</form>
 		</FormProvider>

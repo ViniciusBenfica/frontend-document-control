@@ -44,7 +44,12 @@ export default async function RegisterCompanies({ params }: Props) {
 	return (
 		<div className="flex w-full flex-col">
 			<div className="mt-5 ml-6 flex h-full flex-col gap-3">
-				<h1 className="font-bold text-3xl text-gray-700">Cadastro de empresa</h1>
+				<div>
+					<h1 className="text-2xl font-extrabold tracking-tight text-[#020817f6]">
+						Gerenciamento de empresa
+					</h1>
+					<p className="text-[#64748b] text-sm">Cadastre ou atualize uma empresa no sistema.</p>
+				</div>
 				<div className="w-full">
 					<FormContextcompany documents={documents.body} enterPrise={enterPrise.body} />
 				</div>
