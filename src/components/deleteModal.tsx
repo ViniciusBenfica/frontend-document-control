@@ -7,8 +7,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	useDisclosure,
-} from "@nextui-org/modal";
-import { Button } from "@nextui-org/react";
+} from "@heroui/modal";
 import RemoveIcon from "/public/icon/removeIcon.svg";
 
 interface Props {
@@ -27,21 +26,26 @@ export default function DeleteModal({ deleteFunction }: Props) {
 						<>
 							<ModalHeader className="flex flex-col gap-1">Deseja excluir?</ModalHeader>
 							<ModalBody>
-								<p>Após excluir não será possivel voltar o dado.</p>
+								<p>Após excluir não será possivel recuperar o dado.</p>
 							</ModalBody>
 							<ModalFooter>
-								<Button color="danger" variant="light" onPress={onClose}>
+								<button
+									type="button"
+									className="bg-[#c80303] hover:bg-[#a40303] p-2 max-w-[100px] rounded-md text-white text-sm w-full text-center"
+									onClick={onClose}
+								>
 									Fechar
-								</Button>
-								<Button
-									color="primary"
-									onPress={() => {
+								</button>
+								<button
+									type="button"
+									className="bg-[#0367c8] hover:bg-[#0353a4] p-2 max-w-[100px] rounded-md text-white text-sm w-full"
+									onClick={() => {
 										deleteFunction();
 										onClose();
 									}}
 								>
 									Excluir
-								</Button>
+								</button>
 							</ModalFooter>
 						</>
 					)}
