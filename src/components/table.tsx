@@ -3,11 +3,10 @@
 import DeleteModal from "@/components/deleteModal";
 import { axiosHttpAdapter, type httpClient } from "@/service";
 import { truncateString } from "@/utils/tuncateString";
-import { parseDate } from "@internationalized/date";
+import { DateRangePicker } from "@heroui/date-picker";
+import { Input } from "@heroui/input";
+import { Pagination } from "@heroui/pagination";
 import {
-	DateRangePicker,
-	Input,
-	Pagination,
 	type SortDescriptor,
 	Table,
 	TableBody,
@@ -16,7 +15,8 @@ import {
 	TableHeader,
 	TableRow,
 	getKeyValue,
-} from "@nextui-org/react";
+} from "@heroui/table";
+import { parseDate, toZoned } from "@internationalized/date";
 import debounce from "debounce";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
@@ -51,7 +51,7 @@ export default function TableComponent<T>({
 		date: { start: null, end: null },
 	});
 	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-		column: undefined,
+		column: "id",
 		direction: "ascending",
 	});
 
@@ -128,14 +128,17 @@ export default function TableComponent<T>({
 									value={
 										filterValue?.date?.start && filterValue?.date?.end
 											? {
-													start: parseDate(filterValue.date.start),
-													end: parseDate(filterValue.date.end),
+													start: toZoned(parseDate(filterValue.date.start), "UTC"),
+													end: toZoned(parseDate(filterValue.date.end), "UTC"),
 												}
 											: null
 									}
 									onChange={(e) =>
 										handleFilterChange({
-											date: { start: e.start.toString(), end: e.end.toString() },
+											date: {
+												start: e?.start?.toString() ?? null,
+												end: e?.end?.toString() ?? null,
+											},
 										})
 									}
 								/>
@@ -167,7 +170,7 @@ export default function TableComponent<T>({
 					{(column) => (
 						<TableColumn
 							allowsSorting={column.sortable}
-							className="bg-[#27272a] p-5 text-white"
+							className="bg-[#27272a] py-5 text-white"
 							key={column.key}
 						>
 							{column.label}
@@ -177,7 +180,7 @@ export default function TableComponent<T>({
 				<TableBody items={sortedItems}>
 					{sortedItems.map((item, index) => (
 						<TableRow
-							className={`${index % 2 === 1 ? "bg-gray-300" : "bg-white"} h-[40px]`}
+							className={`${index % 2 === 1 ? "bg-gray-300" : "bg-white"} h-[40px] border-b border-gray-200`}
 							key={item?.id}
 						>
 							{columns.map((column) => (
