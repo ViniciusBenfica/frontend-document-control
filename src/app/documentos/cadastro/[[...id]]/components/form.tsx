@@ -4,6 +4,7 @@ import { axiosHttpAdapter, type httpClient } from "@/service";
 import type { IDocuments } from "@/types/IDocuments";
 import { Input, Textarea } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -101,12 +102,12 @@ export default function DocumentForm({ document }: Props) {
 			</div>
 			<br />
 			<div className="flex gap-2 w-[300px]">
-				<button
-					type="submit"
-					className="bg-[#c80303] hover:bg-[#a40303] p-2 rounded-md text-white text-sm w-full"
+				<Link
+					href="/documentos"
+					className="bg-[#c80303] hover:bg-[#a40303] p-2 rounded-md text-white text-sm w-full text-center"
 				>
 					Cancelar
-				</button>
+				</Link>
 				<button
 					type="submit"
 					className="bg-[#0367c8] hover:bg-[#0353a4] p-2 rounded-md text-white text-sm w-full"
