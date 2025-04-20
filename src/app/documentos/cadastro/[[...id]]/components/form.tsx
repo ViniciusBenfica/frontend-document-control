@@ -2,8 +2,8 @@
 
 import { axiosHttpAdapter, type httpClient } from "@/service";
 import type { IDocuments } from "@/types/IDocuments";
+import { Input, Textarea } from "@heroui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input, Textarea } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -29,8 +29,8 @@ export default function DocumentForm({ document }: Props) {
 	} = useForm<FormValues>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			title: document.title,
-			description: document.description,
+			title: document?.title,
+			description: document?.description,
 		},
 	});
 
@@ -52,7 +52,7 @@ export default function DocumentForm({ document }: Props) {
 
 	const onSubmit: SubmitHandler<FormValues> = async (data: FormValues) => {
 		try {
-			if (document.id) {
+			if (document?.id) {
 				await updateDocument(axiosHttpAdapter, data);
 				toast.success("Documento atualizado com sucesso");
 			} else {
@@ -68,39 +68,51 @@ export default function DocumentForm({ document }: Props) {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col">
-			<button
-				type="submit"
-				className="w-[150px] rounded-lg bg-slate-300 p-2 font-semibold duration-100 hover:bg-gray-400"
-			>
-				Salvar
-			</button>
 			<br />
-			<div className="flex w-3/4 flex-col justify-center gap-2">
+			<div className="flex w-2/4 flex-col justify-center gap-2">
 				<div>
-					<label htmlFor="title" className="text-gray-700 text-smfont-medium">
-						Titulo do documento
+					<label htmlFor="title" className="text-[#020817f6] font-bold text-sm">
+						Titulo
 					</label>
 					<Input
 						type="text"
 						{...register("title")}
 						variant="bordered"
+						placeholder="Digite o título do documento"
 						isInvalid={!!errors?.title}
 						errorMessage={errors?.title?.message}
-						className="w-full"
+						className="w-full mt-1"
 					/>
 				</div>
 				<div>
-					<label htmlFor="descrição" className="text-gray-700 text-smfont-medium">
-						Descrição do documento
+					<label htmlFor="descrição" className="text-[#020817f6] font-bold text-sm">
+						Descrição
 					</label>
 					<Textarea
 						id="descrição"
+						placeholder="Digite a descrição do documento"
 						{...register("description")}
 						variant="bordered"
+						className="mt-1"
 						isInvalid={!!errors?.description}
 						errorMessage={errors?.description?.message}
 					/>
 				</div>
+			</div>
+			<br />
+			<div className="flex gap-2 w-[300px]">
+				<button
+					type="submit"
+					className="bg-[#c80303] hover:bg-[#a40303] p-2 rounded-md text-white text-sm w-full"
+				>
+					Cancelar
+				</button>
+				<button
+					type="submit"
+					className="bg-[#0367c8] hover:bg-[#0353a4] p-2 rounded-md text-white text-sm w-full"
+				>
+					Salvar
+				</button>
 			</div>
 		</form>
 	);
