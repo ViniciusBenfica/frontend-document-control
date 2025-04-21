@@ -16,7 +16,7 @@ import {
 	TableRow,
 	getKeyValue,
 } from "@heroui/table";
-import { parseDate, toZoned } from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 import debounce from "debounce";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
@@ -128,8 +128,8 @@ export default function TableComponent<T>({
 									value={
 										filterValue?.date?.start && filterValue?.date?.end
 											? {
-													start: toZoned(parseDate(filterValue.date.start), "UTC"),
-													end: toZoned(parseDate(filterValue.date.end), "UTC"),
+													start: parseDate(filterValue.date.start),
+													end: parseDate(filterValue.date.end),
 												}
 											: null
 									}
